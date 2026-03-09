@@ -1,0 +1,31 @@
+{
+  "name": "distributed-job-queue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DynamicKarabo/Distributed-Job-Queue.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DynamicKarabo/Distributed-Job-Queue/issues"
+  },
+  "homepage": "https://github.com/DynamicKarabo/Distributed-Job-Queue#readme",
+  "dependencies": {
+    "ioredis": "^5.10.0",
+    "ulid": "^3.0.2"
+  },
+  "devDependencies": {
+    "@types/ioredis": "^4.28.10",
+    "@types/node": "^25.3.5",
+    "nodemon": "^3.1.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
