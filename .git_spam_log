@@ -24,3 +24,4 @@ Phase 4 Commit 22: Add support for 'optional' dependencies
 Phase 4 Commit 23: Update Worker.handleFailure to manage dependency chains
 Phase 4 Commit 24: Ensure children are not triggered if parent fails permanently
 Phase 4 Commit 25: Add cleanup logic for stale dependency keys in Redis
+Phase 4 Commit 26: Benchmark dependency resolution at scale
