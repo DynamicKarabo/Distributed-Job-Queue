@@ -14,3 +14,4 @@ Phase 4 Commit 12: Implement validation to prevent circular dependencies
 Phase 4 Commit 13: Add depth limit for dependency chains
 Phase 4 Commit 14: Optimize Redis memory usage for dependency tracking
 Phase 4 Commit 15: Ensure dependent jobs maintain their original priority
+Phase 4 Commit 16: Update getStats to include 'waiting' job count
