@@ -28,3 +28,4 @@ Commit 26: Implement handleFailure method in Worker
 Commit 27: Add basic re-queueing logic for failed jobs
 Commit 28: Add support for Dead Letter Queue (DLQ)
 Commit 29: Log transitions to the DLQ after max retries
+Commit 30: Update AddJobOptions with retryOptions
