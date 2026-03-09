@@ -11,3 +11,4 @@ Commit 9: Setup Redis connection in Queue class
 Commit 10: Implement basic add method for enqueuing jobs
 Commit 11: Add job serialization to the Queue.add method
 Commit 12: Add close method to Queue class for cleanup
+Commit 13: Define JobHandler type for worker processes
