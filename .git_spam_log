@@ -10,3 +10,4 @@ Phase 2 Commit 8: Handle rate limit check in Worker.start loop
 Phase 2 Commit 9: Implement idle sleep when rate limit is reached
 Phase 2 Commit 10: Add unit tests for sliding window logic
 Phase 2 Commit 11: Refactor checkRateLimit to use new Lua script
+Phase 2 Commit 12: Update Worker constructor to initialize rate limit scripts
