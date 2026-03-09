@@ -13,3 +13,4 @@ Phase 2 Commit 11: Refactor checkRateLimit to use new Lua script
 Phase 2 Commit 12: Update Worker constructor to initialize rate limit scripts
 Phase 2 Commit 13: Fix off-by-one error in sliding window timestamp calculation
 Phase 2 Commit 14: Add logging for rate limit hits
+Phase 2 Commit 15: Ensure rate limit keys expire to save memory
