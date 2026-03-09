@@ -18,3 +18,4 @@ Phase 3 Commit 16: Implement detailed job list view in Dashboard
 Phase 3 Commit 17: Add 'retry' and 'delete' actions for individual jobs
 Phase 3 Commit 18: Setup static file serving for Dashboard frontend
 Phase 3 Commit 19: Add error handling for Dashboard API failures
+Phase 3 Commit 20: Optimize Redis calls for stat aggregation
