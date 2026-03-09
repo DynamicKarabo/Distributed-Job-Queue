@@ -16,3 +16,4 @@ Commit 14: Initial implementation of Worker class
 Commit 15: Add Redis connection management to Worker
 Commit 16: Implement Worker.start for job polling
 Commit 17: Add reliable job fetching using BRPOPLPUSH
+Commit 18: Update job status to 'processing' before execution
