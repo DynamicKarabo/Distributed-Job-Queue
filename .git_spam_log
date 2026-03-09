@@ -21,3 +21,4 @@ Phase 4 Commit 19: Improve error handling for missing parent jobs
 Phase 4 Commit 20: Add logging for dependency-triggered job activations
 Phase 4 Commit 21: Implement timeout for jobs stuck in 'waiting' state
 Phase 4 Commit 22: Add support for 'optional' dependencies
+Phase 4 Commit 23: Update Worker.handleFailure to manage dependency chains
