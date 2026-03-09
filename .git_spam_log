@@ -1,3 +1,4 @@
 Phase 4 Commit 0: Start Phase 4: Job Dependencies
 Phase 4 Commit 1: Add dependencies field to Job interface in types.ts
 Phase 4 Commit 2: Update AddJobOptions to support dependency list
+Phase 4 Commit 3: Implement dependency check in Queue.add
