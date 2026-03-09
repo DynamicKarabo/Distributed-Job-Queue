@@ -6,3 +6,4 @@ Commit 4: Create src directory and basic structure
 Commit 5: Define JobStatus type in src/types.ts
 Commit 6: Define Job interface with core fields
 Commit 7: Add QueueOptions and AddJobOptions to types.ts
+Commit 8: Initial implementation of Queue class
