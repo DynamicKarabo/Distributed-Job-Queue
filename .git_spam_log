@@ -32,3 +32,4 @@ Phase 4 Commit 30: Fix bug in parent counter decrement logic
 Phase 4 Commit 31: Improve Dashboard UI to show job dependency tree
 Phase 4 Commit 32: Add tooltips for dependency status in Dashboard
 Phase 4 Commit 33: Handle Redis node failures during dependency updates
+Phase 4 Commit 34: Refine Worker loop for dependency-aware processing
