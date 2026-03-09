@@ -23,9 +23,30 @@ export class Queue {
       retryCount: 0,
       maxRetries: options.maxRetries ?? 3,
       createdAt: Date.now(),
+      dependencies: options.dependencies,
     };
 
-    if (options.delay && options.delay > 0) {
+    if (options.dependencies && options.dependencies.length > 0) {
+      job.status = 'queued'; // Still 'queued' but effectively waiting
+      const waitingKey = `${this.prefix}:${this.name}:waiting:${job.id}`;
+      const waitingSetKey = `${this.prefix}:${this.name}:waiting-set`;
+      const parentCounterKey = `${this.prefix}:${this.name}:parents:${job.id}`;
+      
+      // 1. Store the job data
+      await this.redis.set(waitingKey, JSON.stringify(job));
+      // 2. Add to waiting set
+      await this.redis.sadd(waitingSetKey, job.id);
+      // 3. Set the counter of parents it's waiting for
+      await this.redis.set(parentCounterKey, options.dependencies.length);
+      
+      // 4. Register this job as a dependent for each parent
+      for (const parentId of options.dependencies) {
+        const dependentsKey = `${this.prefix}:${this.name}:dependents:${parentId}`;
+        await this.redis.sadd(dependentsKey, job.id);
+      }
+      
+      console.log(`Job ${job.id} is waiting on ${options.dependencies.length} parents.`);
+    } else if (options.delay && options.delay > 0) {
       const delayedKey = `${this.prefix}:${this.name}:delayed`;
       const runAt = Date.now() + options.delay;
       await this.redis.zadd(delayedKey, runAt, JSON.stringify(job));
@@ -70,12 +91,14 @@ export class Queue {
     const delayedKey = `${this.prefix}:${this.name}:delayed`;
     const dlqKey = `${this.prefix}:${this.name}:dlq`;
     const processingKey = `${this.prefix}:${this.name}:processing`;
+    const waitingSetKey = `${this.prefix}:${this.name}:waiting-set`;
 
-    const [queued, delayed, dlq, processing] = await Promise.all([
+    const [queued, delayed, dlq, processing, waiting] = await Promise.all([
       this.redis.zcard(this.queueKey),
       this.redis.zcard(delayedKey),
       this.redis.llen(dlqKey),
       this.redis.llen(processingKey),
+      this.redis.scard(waitingSetKey),
     ]);
 
     return {
@@ -84,7 +107,8 @@ export class Queue {
       delayed,
       dlq,
       processing,
-      total: queued + delayed + dlq + processing
+      waiting,
+      total: queued + delayed + dlq + processing + waiting
     };
   }
 

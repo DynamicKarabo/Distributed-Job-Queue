@@ -34,15 +34,13 @@ async function runTest() {
 
   worker.start();
 
-  console.log('--- Enqueueing jobs with different priorities ---');
-  // Enqueue priority 200 (Low)
-  await queue.add('lowPriority', { label: 'Low (200)' }, { priority: 200 });
-  // Enqueue priority 10 (High)
-  await queue.add('highPriority', { label: 'High (10)' }, { priority: 10 });
-  // Enqueue priority 100 (Default)
-  await queue.add('defaultPriority', { label: 'Default (100)' });
-  // Enqueue priority 5 (Highest)
-  await queue.add('highestPriority', { label: 'Highest (5)' }, { priority: 5 });
+  console.log('--- Enqueueing dependency chain ---');
+  // Job A (Parent)
+  const jobA = await queue.add('parentJob', { label: 'Parent (A)' });
+  // Job B (Child, depends on A)
+  const jobB = await queue.add('childJob', { label: 'Child (B)' }, { dependencies: [jobA.id] });
+  
+  console.log(`Enqueued Parent ${jobA.id} and Child ${jobB.id} (waiting on A)`);
 
   console.log('--- Enqueueing delayed job (5s) ---');
   await queue.add('delayedJob', { label: 'Delayed (5s)' }, { delay: 5000 });

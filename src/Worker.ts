@@ -62,6 +62,45 @@ export class Worker {
         end
       `
     });
+
+    // Define Lua script for dependency triggering
+    this.redis.defineCommand('triggerDependents', {
+      numberOfKeys: 0,
+      lua: `
+        local parentId = ARGV[1]
+        local prefix = ARGV[2]
+        local queueName = ARGV[3]
+        local queueKey = ARGV[4]
+        
+        local dependentsKey = prefix .. ":" .. queueName .. ":dependents:" .. parentId
+        local dependents = redis.call('SMEMBERS', dependentsKey)
+        
+        for _, childId in ipairs(dependents) do
+          local parentCounterKey = prefix .. ":" .. queueName .. ":parents:" .. childId
+          local count = redis.call('DECR', parentCounterKey)
+          
+          if count <= 0 then
+            local waitingKey = prefix .. ":" .. queueName .. ":waiting:" .. childId
+            local waitingSetKey = prefix .. ":" .. queueName .. ":waiting-set"
+            local jobData = redis.call('GET', waitingKey)
+            
+            if jobData then
+              -- cjson is available in Redis Lua
+              local job = cjson.decode(jobData)
+              -- Add to queue
+              redis.call('ZADD', queueKey, job.priority, jobData)
+              -- Cleanup waiting state
+              redis.call('DEL', waitingKey)
+              redis.call('SREM', waitingSetKey, childId)
+              redis.call('DEL', parentCounterKey)
+            end
+          end
+        end
+        -- Cleanup dependents list for the completed parent
+        redis.call('DEL', dependentsKey)
+        return true
+      `
+    });
   }
 
   private async isRateLimited(): Promise<boolean> {
@@ -74,10 +113,19 @@ export class Worker {
     return result === 0;
   }
 
+  private async triggerDependents(jobId: string) {
+    await (this.redis as any).triggerDependents(
+      jobId,
+      this.prefix,
+      this.name,
+      this.queueKey
+    );
+  }
+
   async start() {
     if (this.running) return;
     this.running = true;
-    console.log(`Worker started for queue: ${this.name} (Priority enabled, Rate Limit: ${this.options.rateLimit ? 'on' : 'off'})`);
+    console.log(`Worker started for queue: ${this.name} (Priority, Rate Limit, Dependencies: enabled)`);
 
     while (this.running) {
       try {
@@ -99,6 +147,10 @@ export class Worker {
             await this.handler(job);
             job.status = 'completed';
             job.finishedAt = Date.now();
+            
+            // Trigger dependents before removing from processing list
+            await this.triggerDependents(job.id);
+
             // Remove from processing list on success
             await this.redis.lrem(this.processingKey, 1, jobData);
             console.log(`Job ${job.id} completed successfully.`);
