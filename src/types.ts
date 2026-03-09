@@ -14,6 +14,11 @@ export interface Job<T = any> {
   error?: string;
 }
 
+export interface RateLimitOptions {
+  limit: number;
+  windowMs: number;
+}
+
 export interface QueueOptions {
   redis: {
     host?: string;
@@ -22,6 +27,7 @@ export interface QueueOptions {
     db?: number;
   };
   prefix?: string;
+  rateLimit?: RateLimitOptions;
 }
 
 export interface AddJobOptions {
