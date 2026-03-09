@@ -2,3 +2,4 @@ Commit 0: Initial commit
 Commit 1: Add package.json and basic scripts
 Commit 2: Install ioredis and ulid dependencies
 Commit 3: Configure TypeScript (tsconfig.json)
+Commit 4: Create src directory and basic structure
