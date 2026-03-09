@@ -7,6 +7,7 @@ export interface Job<T = any> {
   status: JobStatus;
   priority: number;
   retryCount: number;
+  dependencies?: string[];
   maxRetries: number;
   createdAt: number;
   processedAt?: number;
