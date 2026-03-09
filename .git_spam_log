@@ -41,3 +41,4 @@ Commit 39: Refactor Queue structure for better modularity
 Commit 40: Fix import path for types in Queue.ts
 Commit 41: Create end-to-end test script in src/test.ts
 Commit 42: Add simulated failure scenarios to test script
+Commit 43: Test delayed job functionality in test script
