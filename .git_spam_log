@@ -28,3 +28,4 @@ Phase 4 Commit 26: Benchmark dependency resolution at scale
 Phase 4 Commit 27: Optimize Lua script for bulk dependent triggering
 Phase 4 Commit 28: Update README.md with job dependency examples
 Phase 4 Commit 29: Add integration test for complex DAG of jobs
+Phase 4 Commit 30: Fix bug in parent counter decrement logic
