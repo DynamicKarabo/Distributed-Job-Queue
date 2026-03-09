@@ -20,3 +20,4 @@ Phase 2 Commit 18: Update Job interface with lastRateLimitDelay timestamp
 Phase 2 Commit 19: Improve accuracy of sliding window by using Redis time
 Phase 2 Commit 20: Handle Redis connection drops during rate limit check
 Phase 2 Commit 21: Optimize Lua script performance for high-throughput queues
+Phase 2 Commit 22: Add documentation for Rate Limiting configuration
