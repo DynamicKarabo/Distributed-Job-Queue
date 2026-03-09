@@ -6,3 +6,4 @@ Phase 3 Commit 4: Implement LLEN for DLQ and processing counts
 Phase 3 Commit 5: Define QueueStats interface in types.ts
 Phase 3 Commit 6: Initial implementation of Dashboard class
 Phase 3 Commit 7: Setup Express server in Dashboard.ts
+Phase 3 Commit 8: Add /api/stats endpoint to Dashboard
