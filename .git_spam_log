@@ -14,3 +14,4 @@ Phase 3 Commit 12: Implement metric cards for different job states
 Phase 3 Commit 13: Add Chart.js for real-time queue visualization
 Phase 3 Commit 14: Handle multi-queue monitoring in Dashboard API
 Phase 3 Commit 15: Add auto-refresh toggle to Dashboard UI
+Phase 3 Commit 16: Implement detailed job list view in Dashboard
