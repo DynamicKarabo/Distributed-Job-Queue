@@ -32,3 +32,4 @@ Commit 30: Update AddJobOptions with retryOptions
 Commit 31: Implement calculation for exponential backoff delay
 Commit 32: Integrate delayed queue into worker failure handling
 Commit 33: Use ZADD to schedule retries with backoff
+Commit 34: Enhance Queue.add to support initial delayed jobs
