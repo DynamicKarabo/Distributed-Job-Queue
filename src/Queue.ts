@@ -63,6 +63,31 @@ export class Queue {
     }, intervalMs);
   }
 
+  /**
+   * Returns statistics for the queue.
+   */
+  async getStats() {
+    const delayedKey = `${this.prefix}:${this.name}:delayed`;
+    const dlqKey = `${this.prefix}:${this.name}:dlq`;
+    const processingKey = `${this.prefix}:${this.name}:processing`;
+
+    const [queued, delayed, dlq, processing] = await Promise.all([
+      this.redis.zcard(this.queueKey),
+      this.redis.zcard(delayedKey),
+      this.redis.llen(dlqKey),
+      this.redis.llen(processingKey),
+    ]);
+
+    return {
+      name: this.name,
+      queued,
+      delayed,
+      dlq,
+      processing,
+      total: queued + delayed + dlq + processing
+    };
+  }
+
   async close() {
     await this.redis.quit();
   }
