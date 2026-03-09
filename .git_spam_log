@@ -4,3 +4,4 @@ Phase 3 Commit 2: Add getStats method to Queue class
 Phase 3 Commit 3: Implement ZCARD for queued and delayed counts
 Phase 3 Commit 4: Implement LLEN for DLQ and processing counts
 Phase 3 Commit 5: Define QueueStats interface in types.ts
+Phase 3 Commit 6: Initial implementation of Dashboard class
