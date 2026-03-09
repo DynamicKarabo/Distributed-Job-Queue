@@ -23,3 +23,4 @@ Commit 21: Implement removal of job from processing list on success
 Commit 22: Initial failure handling in Worker.start
 Commit 23: Add logging for worker-level errors
 Commit 24: Implement Worker.stop for graceful shutdown
+Commit 25: Update Job interface with retryCount and maxRetries
