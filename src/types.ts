@@ -44,6 +44,7 @@ export interface AddJobOptions {
   priority?: number;
   delay?: number;
   maxRetries?: number;
+  dependencies?: string[];
   retryOptions?: {
     type: 'fixed' | 'exponential';
     delay: number;
