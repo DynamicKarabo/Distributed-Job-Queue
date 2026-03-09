@@ -12,3 +12,4 @@ Phase 3 Commit 10: Create basic HTML structure for Dashboard
 Phase 3 Commit 11: Add responsive CSS for Dashboard layout
 Phase 3 Commit 12: Implement metric cards for different job states
 Phase 3 Commit 13: Add Chart.js for real-time queue visualization
+Phase 3 Commit 14: Handle multi-queue monitoring in Dashboard API
