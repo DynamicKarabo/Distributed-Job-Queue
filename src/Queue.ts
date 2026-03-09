@@ -19,6 +19,7 @@ export class Queue {
       type,
       data,
       status: 'queued',
+      priority: options.priority ?? 100,
       retryCount: 0,
       maxRetries: options.maxRetries ?? 3,
       createdAt: Date.now(),
@@ -29,7 +30,9 @@ export class Queue {
       const runAt = Date.now() + options.delay;
       await this.redis.zadd(delayedKey, runAt, JSON.stringify(job));
     } else {
-      await this.redis.lpush(this.queueKey, JSON.stringify(job));
+      // Use ZSET for the main queue to support priority. 
+      // Score = priority.
+      await this.redis.zadd(this.queueKey, job.priority, JSON.stringify(job));
     }
 
     return job;
@@ -52,7 +55,7 @@ export class Queue {
         for (const jobData of jobsToMove) {
           await this.redis.multi()
             .zrem(delayedKey, jobData)
-            .lpush(this.queueKey, jobData)
+            .zadd(this.queueKey, JSON.parse(jobData).priority, jobData)
             .exec();
         }
         console.log(`Moved ${jobsToMove.length} jobs from delayed to main queue.`);

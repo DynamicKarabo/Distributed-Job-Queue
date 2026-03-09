@@ -19,18 +19,32 @@ export class Worker {
     this.redis = new Redis(options.redis);
     this.queueKey = `${this.prefix}:${this.name}:jobs`;
     this.processingKey = `${this.prefix}:${this.name}:processing`;
+
+    // Define Lua script for atomic priority pop and push to processing list
+    this.redis.defineCommand('priorityPopPush', {
+      numberOfKeys: 2,
+      lua: `
+        local job = redis.call('ZRANGE', KEYS[1], 0, 0)[1]
+        if job then
+          redis.call('ZREM', KEYS[1], job)
+          redis.call('LPUSH', KEYS[2], job)
+          return job
+        else
+          return nil
+        end
+      `
+    });
   }
 
   async start() {
     if (this.running) return;
     this.running = true;
-    console.log(`Worker started for queue: ${this.name}`);
+    console.log(`Worker started for queue: ${this.name} (Priority enabled)`);
 
     while (this.running) {
       try {
-        // Use RPOPLPUSH for reliable queueing (atomic move from queue to processing)
-        // Note: In a real distributed system, we'd need to handle the processing list recovery.
-        const jobData = await this.redis.brpoplpush(this.queueKey, this.processingKey, 5);
+        // Use the custom Lua script for priority-aware reliable fetching
+        const jobData = await (this.redis as any).priorityPopPush(this.queueKey, this.processingKey);
         
         if (jobData) {
           const job: Job = JSON.parse(jobData);
@@ -49,9 +63,12 @@ export class Worker {
             job.status = 'failed';
             job.error = error.message;
             
-            // Handle retry logic (Milestone 3)
+            // Handle retry logic (Milestone 3 / Priority Phase)
             await this.handleFailure(job, jobData);
           }
+        } else {
+          // No job found, wait a bit before polling again
+          await new Promise(resolve => setTimeout(resolve, 1000));
         }
       } catch (error) {
         console.error('Worker error:', error);
@@ -65,12 +82,8 @@ export class Worker {
       job.retryCount++;
       job.status = 'queued';
 
-      // Default retry strategy: Fixed delay of 5s if not specified
-      let backoffDelay = 5000; 
-
-      // If exponential backoff is specified in job or worker options, calculate it.
-      // (For now, let's just use a hardcoded exponential if maxRetries > 1)
-      backoffDelay = Math.pow(2, job.retryCount) * 1000;
+      // Exponential backoff
+      const backoffDelay = Math.pow(2, job.retryCount) * 1000;
 
       const delayedKey = `${this.prefix}:${this.name}:delayed`;
       const runAt = Date.now() + backoffDelay;

@@ -26,14 +26,18 @@ async function runTest() {
 
   worker.start();
 
-  console.log('--- Enqueueing normal job ---');
-  await queue.add('sendEmail', { to: 'user@example.com', body: 'Hello!' });
+  console.log('--- Enqueueing jobs with different priorities ---');
+  // Enqueue priority 200 (Low)
+  await queue.add('lowPriority', { label: 'Low (200)' }, { priority: 200 });
+  // Enqueue priority 10 (High)
+  await queue.add('highPriority', { label: 'High (10)' }, { priority: 10 });
+  // Enqueue priority 100 (Default)
+  await queue.add('defaultPriority', { label: 'Default (100)' });
+  // Enqueue priority 5 (Highest)
+  await queue.add('highestPriority', { label: 'Highest (5)' }, { priority: 5 });
 
   console.log('--- Enqueueing delayed job (5s) ---');
-  await queue.add('sendEmail', { to: 'user2@example.com', body: 'Delayed' }, { delay: 5000 });
-
-  console.log('--- Enqueueing failing job (for retry test) ---');
-  await queue.add('sendEmail', { shouldFail: true, attempt: 1 }, { maxRetries: 2 });
+  await queue.add('delayedJob', { label: 'Delayed (5s)' }, { delay: 5000 });
 
   // Keep process alive for a bit to see results
   setTimeout(async () => {

@@ -5,6 +5,7 @@ export interface Job<T = any> {
   type: string;
   data: T;
   status: JobStatus;
+  priority: number;
   retryCount: number;
   maxRetries: number;
   createdAt: number;
