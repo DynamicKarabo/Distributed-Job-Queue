@@ -37,3 +37,4 @@ Commit 35: Add startDelayedPoller method to Queue class
 Commit 36: Implement background polling for delayed jobs
 Commit 37: Atomic move from delayed set to main queue using Multi
 Commit 38: Improve logging in Queue and Worker classes
+Commit 39: Refactor Queue structure for better modularity
