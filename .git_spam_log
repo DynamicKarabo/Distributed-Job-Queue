@@ -21,3 +21,4 @@ Commit 19: Add logic to execute the job handler within the worker
 Commit 20: Handle successful job completion and status update
 Commit 21: Implement removal of job from processing list on success
 Commit 22: Initial failure handling in Worker.start
+Commit 23: Add logging for worker-level errors
