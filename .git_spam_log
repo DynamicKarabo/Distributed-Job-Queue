@@ -4,3 +4,4 @@ Phase 2 Commit 2: Include rateLimit in QueueOptions
 Phase 2 Commit 3: Define RateLimit state in Worker class
 Phase 2 Commit 4: Add rate limit key generation helper
 Phase 2 Commit 5: Implement base checkRateLimit method in Worker
+Phase 2 Commit 6: Setup Redis Sorted Set for sliding window rate limiting
