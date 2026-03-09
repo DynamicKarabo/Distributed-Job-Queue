@@ -11,3 +11,4 @@ Phase 4 Commit 9: Handle multi-parent dependencies correctly
 Phase 4 Commit 10: Add unit tests for dependency graph resolution
 Phase 4 Commit 11: Fix race condition when multiple parents finish simultaneously
 Phase 4 Commit 12: Implement validation to prevent circular dependencies
+Phase 4 Commit 13: Add depth limit for dependency chains
