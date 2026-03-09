@@ -27,3 +27,4 @@ Phase 2 Commit 25: Fix race condition in sliding window cleanup
 Phase 2 Commit 26: Implement token bucket alternative for comparison
 Phase 2 Commit 27: Benchmark sliding window vs token bucket implementation
 Phase 2 Commit 28: Choose sliding window as default due to better accuracy
+Phase 2 Commit 29: Refine Worker loop for smoother rate-limited transitions
