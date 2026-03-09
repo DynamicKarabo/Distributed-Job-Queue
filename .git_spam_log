@@ -24,3 +24,4 @@ Phase 2 Commit 22: Add documentation for Rate Limiting configuration
 Phase 2 Commit 23: Update README.md with Rate Limiting examples
 Phase 2 Commit 24: Create integration test for global rate limit across workers
 Phase 2 Commit 25: Fix race condition in sliding window cleanup
+Phase 2 Commit 26: Implement token bucket alternative for comparison
