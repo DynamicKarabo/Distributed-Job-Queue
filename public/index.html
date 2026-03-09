@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distributed Job Queue Dashboard</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+            --primary: #38bdf8;
+            --accent: #818cf8;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.7;
+        }
+
+        .queued { color: var(--primary); }
+        .processing { color: var(--accent); }
+        .delayed { color: var(--warning); }
+        .dlq { color: var(--danger); }
+        .total { color: var(--success); }
+
+        .refresh-label {
+            margin-top: 2rem;
+            font-size: 0.875rem;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <h1>Job Queue Dashboard</h1>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Queued</div>
+            <div id="queued" class="stat-value queued">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Processing</div>
+            <div id="processing" class="stat-value processing">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Delayed</div>
+            <div id="delayed" class="stat-value delayed">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Dead Letters</div>
+            <div id="dlq" class="stat-value dlq">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Total Jobs</div>
+            <div id="total" class="stat-value total">0</div>
+        </div>
+    </div>
+
+    <div class="refresh-label">Refreshing every 2 seconds...</div>
+
+    <script>
+        async function updateStats() {
+            try {
+                const res = await fetch('/api/stats');
+                const stats = await res.json();
+                
+                document.getElementById('queued').textContent = stats.queued;
+                document.getElementById('processing').textContent = stats.processing;
+                document.getElementById('delayed').textContent = stats.delayed;
+                document.getElementById('dlq').textContent = stats.dlq;
+                document.getElementById('total').textContent = stats.total;
+            } catch (err) {
+                console.error('Failed to fetch stats:', err);
+            }
+        }
+
+        setInterval(updateStats, 2000);
+        updateStats();
+    </script>
+</body>
+</html>

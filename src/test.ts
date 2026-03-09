@@ -1,5 +1,6 @@
 import { Queue } from './Queue';
 import { Worker } from './Worker';
+import { Dashboard } from './Dashboard';
 
 const options = {
   redis: {
@@ -8,14 +9,17 @@ const options = {
   },
   prefix: 'test-queue',
   rateLimit: {
-    limit: 2,
-    windowMs: 5000 // Only 2 jobs every 5 seconds
+    limit: 10,
+    windowMs: 5000
   }
 };
 
 async function runTest() {
   const queue = new Queue('email-tasks', options);
-  await queue.startDelayedPoller(500); // Poll every 500ms for delayed jobs
+  await queue.startDelayedPoller(500);
+
+  const dashboard = new Dashboard(queue, 3000);
+  dashboard.start();
 
   const worker = new Worker('email-tasks', async (job) => {
     console.log(`Processing job ${job.id} of type ${job.type} with data:`, job.data);

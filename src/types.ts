@@ -30,6 +30,15 @@ export interface QueueOptions {
   rateLimit?: RateLimitOptions;
 }
 
+export interface QueueStats {
+  name: string;
+  queued: number;
+  delayed: number;
+  dlq: number;
+  processing: number;
+  total: number;
+}
+
 export interface AddJobOptions {
   priority?: number;
   delay?: number;
