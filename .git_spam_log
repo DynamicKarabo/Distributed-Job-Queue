@@ -13,3 +13,4 @@ Commit 11: Add job serialization to the Queue.add method
 Commit 12: Add close method to Queue class for cleanup
 Commit 13: Define JobHandler type for worker processes
 Commit 14: Initial implementation of Worker class
+Commit 15: Add Redis connection management to Worker
