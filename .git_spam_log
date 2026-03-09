@@ -4,3 +4,4 @@ Phase 4 Commit 2: Update AddJobOptions to support dependency list
 Phase 4 Commit 3: Implement dependency check in Queue.add
 Phase 4 Commit 4: Store dependent jobs in a 'waiting' state initially
 Phase 4 Commit 5: Add Redis logic to track dependents of a job
+Phase 4 Commit 6: Implement parent counter logic using Redis HASH
