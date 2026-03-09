@@ -1,3 +1,4 @@
 Phase 2 Commit 0: Start Phase 2: Global Rate Limiting
 Phase 2 Commit 1: Add RateLimitOptions interface to types.ts
 Phase 2 Commit 2: Include rateLimit in QueueOptions
+Phase 2 Commit 3: Define RateLimit state in Worker class
