@@ -18,3 +18,4 @@ Phase 4 Commit 16: Update getStats to include 'waiting' job count
 Phase 4 Commit 17: Add dependency visualization to Dashboard API
 Phase 4 Commit 18: Refactor Queue.add to handle nested dependency logic
 Phase 4 Commit 19: Improve error handling for missing parent jobs
+Phase 4 Commit 20: Add logging for dependency-triggered job activations
