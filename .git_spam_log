@@ -15,3 +15,4 @@ Phase 2 Commit 13: Fix off-by-one error in sliding window timestamp calculation
 Phase 2 Commit 14: Add logging for rate limit hits
 Phase 2 Commit 15: Ensure rate limit keys expire to save memory
 Phase 2 Commit 16: Implement per-queue rate limit key namespacing
+Phase 2 Commit 17: Add configurable retry delay after rate limit hit
