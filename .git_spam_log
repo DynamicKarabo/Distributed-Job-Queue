@@ -35,3 +35,4 @@ Commit 33: Use ZADD to schedule retries with backoff
 Commit 34: Enhance Queue.add to support initial delayed jobs
 Commit 35: Add startDelayedPoller method to Queue class
 Commit 36: Implement background polling for delayed jobs
+Commit 37: Atomic move from delayed set to main queue using Multi
