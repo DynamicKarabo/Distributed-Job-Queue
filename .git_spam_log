@@ -1,3 +1,4 @@
 Phase 3 Commit 0: Start Phase 3: Monitoring Dashboard
 Phase 3 Commit 1: Install express and @types/express
 Phase 3 Commit 2: Add getStats method to Queue class
+Phase 3 Commit 3: Implement ZCARD for queued and delayed counts
