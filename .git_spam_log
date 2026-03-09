@@ -26,3 +26,4 @@ Commit 24: Implement Worker.stop for graceful shutdown
 Commit 25: Update Job interface with retryCount and maxRetries
 Commit 26: Implement handleFailure method in Worker
 Commit 27: Add basic re-queueing logic for failed jobs
+Commit 28: Add support for Dead Letter Queue (DLQ)
