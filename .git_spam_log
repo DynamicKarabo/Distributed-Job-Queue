@@ -15,3 +15,4 @@ Commit 13: Define JobHandler type for worker processes
 Commit 14: Initial implementation of Worker class
 Commit 15: Add Redis connection management to Worker
 Commit 16: Implement Worker.start for job polling
+Commit 17: Add reliable job fetching using BRPOPLPUSH
