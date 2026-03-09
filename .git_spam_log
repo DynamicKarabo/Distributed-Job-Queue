@@ -9,3 +9,4 @@ Phase 3 Commit 7: Setup Express server in Dashboard.ts
 Phase 3 Commit 8: Add /api/stats endpoint to Dashboard
 Phase 3 Commit 9: Implement periodic stats polling in Frontend
 Phase 3 Commit 10: Create basic HTML structure for Dashboard
+Phase 3 Commit 11: Add responsive CSS for Dashboard layout
