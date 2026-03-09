@@ -9,16 +9,18 @@ export class Worker {
   private processingKey: string;
   private prefix: string;
   private running: boolean = false;
+  private rateLimitKey: string;
 
   constructor(
     private name: string,
     private handler: JobHandler,
-    options: QueueOptions
+    private options: QueueOptions
   ) {
     this.prefix = options.prefix || 'job-queue';
     this.redis = new Redis(options.redis);
     this.queueKey = `${this.prefix}:${this.name}:jobs`;
     this.processingKey = `${this.prefix}:${this.name}:processing`;
+    this.rateLimitKey = `${this.prefix}:${this.name}:rate-limit`;
 
     // Define Lua script for atomic priority pop and push to processing list
     this.redis.defineCommand('priorityPopPush', {
@@ -34,15 +36,57 @@ export class Worker {
         end
       `
     });
+
+    // Define Lua script for sliding window rate limiting
+    this.redis.defineCommand('checkRateLimit', {
+      numberOfKeys: 1,
+      lua: `
+        local key = KEYS[1]
+        local now = tonumber(ARGV[1])
+        local window = tonumber(ARGV[2])
+        local limit = tonumber(ARGV[3])
+        
+        -- Remove old timestamps
+        redis.call('ZREMRANGEBYSCORE', key, 0, now - window)
+        
+        -- Count items in current window
+        local count = redis.call('ZCARD', key)
+        
+        if count < limit then
+          redis.call('ZADD', key, now, now)
+          -- Set expiry to window size + buffer
+          redis.call('PEXPIRE', key, window + 1000)
+          return 1
+        else
+          return 0
+        end
+      `
+    });
+  }
+
+  private async isRateLimited(): Promise<boolean> {
+    if (!this.options.rateLimit) return false;
+
+    const { limit, windowMs } = this.options.rateLimit;
+    const now = Date.now();
+    
+    const result = await (this.redis as any).checkRateLimit(this.rateLimitKey, now, windowMs, limit);
+    return result === 0;
   }
 
   async start() {
     if (this.running) return;
     this.running = true;
-    console.log(`Worker started for queue: ${this.name} (Priority enabled)`);
+    console.log(`Worker started for queue: ${this.name} (Priority enabled, Rate Limit: ${this.options.rateLimit ? 'on' : 'off'})`);
 
     while (this.running) {
       try {
+        if (await this.isRateLimited()) {
+          // Rate limit reached, wait a bit
+          await new Promise(resolve => setTimeout(resolve, 500));
+          continue;
+        }
+
         // Use the custom Lua script for priority-aware reliable fetching
         const jobData = await (this.redis as any).priorityPopPush(this.queueKey, this.processingKey);
         

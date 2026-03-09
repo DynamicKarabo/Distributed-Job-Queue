@@ -6,7 +6,11 @@ const options = {
     host: 'localhost',
     port: 6379,
   },
-  prefix: 'test-queue'
+  prefix: 'test-queue',
+  rateLimit: {
+    limit: 2,
+    windowMs: 5000 // Only 2 jobs every 5 seconds
+  }
 };
 
 async function runTest() {
