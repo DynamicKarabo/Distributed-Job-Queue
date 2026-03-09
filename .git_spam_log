@@ -8,3 +8,4 @@ Phase 4 Commit 6: Implement parent counter logic using Redis HASH
 Phase 4 Commit 7: Add Lua script for atomic dependency decrement and re-queueing
 Phase 4 Commit 8: Update Worker to trigger child jobs upon completion
 Phase 4 Commit 9: Handle multi-parent dependencies correctly
+Phase 4 Commit 10: Add unit tests for dependency graph resolution
